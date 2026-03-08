@@ -4,14 +4,12 @@ using ETouch = UnityEngine.InputSystem.EnhancedTouch;
 
 public class PlayerTouchMovement : MonoBehaviour
 {
-    [SerializeField]
-    private Vector2 JoystickSize = new Vector2(300, 300);
-    [SerializeField]
-    private FloatingJoystick Joystick;
-    [SerializeField]
+    [SerializeField] private Vector2 JoystickSize = new Vector2(300, 300);
+    [SerializeField] private FloatingJoystick Joystick;
 
     private Finger MovementFinger;
     private Vector2 MovementAmount;
+    private Vector3 lastDirection = Vector3.forward;
 
     private void OnEnable()
     {
@@ -101,8 +99,18 @@ public class PlayerTouchMovement : MonoBehaviour
 
     private void LateUpdate()
     {
+        Vector3 moveDirection = new Vector3(MovementAmount.x, 0, MovementAmount.y);
         transform.Translate(new Vector3(MovementAmount.x, 0, MovementAmount.y) * Time.deltaTime * 5f, Space.World);
-        transform.rotation = Quaternion.LookRotation(new Vector3(MovementAmount.x, 0, MovementAmount.y));
+
+        if (moveDirection.sqrMagnitude > 0.2f)
+        {
+            lastDirection = moveDirection;
+            transform.rotation = Quaternion.LookRotation(lastDirection);
+        }
+        else
+        {
+            transform.rotation = Quaternion.LookRotation(lastDirection);
+        }
     }
 
     private void OnGUI()
