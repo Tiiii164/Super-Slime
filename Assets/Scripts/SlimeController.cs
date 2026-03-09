@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class SlimeController : MonoBehaviour
@@ -12,19 +13,44 @@ public class SlimeController : MonoBehaviour
     [Header("Visual")]
     [SerializeField] private Transform _visual;
 
+    [SerializeField] ParticleSystem eatParticle;
+
+    public static event Action LevelUp;
+
+
     public int Size => _size;
+
+
+
 
     private void Start()
     {
         UpdateScale();
     }
 
-    public void Grow(int value)
+    private void OnEnable()
+    {
+        Food.OnFoodEaten += PlayParticle;
+    }
+
+    private void OnDisable()
+    {
+        Food.OnFoodEaten -= PlayParticle;
+    }
+
+    private void PlayParticle(Vector3 pos)
+    {
+        Vector3 offset = new Vector3(0, 1f, 0);
+        eatParticle.transform.position = pos + offset;
+        eatParticle.Play();
+    }
+
+    public void Eat(int value)
     {
         _exp += value;
 
         int newSize = 1 + _exp / 5;
-
+        
         if (newSize != _size)
         {
             _size = newSize;
@@ -35,6 +61,9 @@ public class SlimeController : MonoBehaviour
     private void UpdateScale()
     {
         float scale = 1f + (_size - 1) * _scalePerSize;
+        eatParticle.transform.localScale = Vector3.one * scale;
         _visual.localScale = Vector3.one * scale;
+        CameraFollowController.Instance.AdjustZoomBasedOnTargetSize();
+        LevelUp?.Invoke();
     }
 }

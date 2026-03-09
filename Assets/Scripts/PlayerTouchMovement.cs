@@ -6,14 +6,21 @@ public class PlayerTouchMovement : MonoBehaviour
 {
     [SerializeField] private Vector2 JoystickSize = new Vector2(300, 300);
     [SerializeField] private FloatingJoystick Joystick;
+    [SerializeField] private float speedMultiplyer = 1.2f;
+    [SerializeField] private float movementSpeed = 1f;
 
     private Finger MovementFinger;
     private Vector2 MovementAmount;
     private Vector3 lastDirection = Vector3.forward;
 
+    public static PlayerTouchMovement Instance { get; private set; }
+
+
     private void OnEnable()
     {
+        Instance = this;
         EnhancedTouchSupport.Enable();
+        SlimeController.LevelUp += LevelUpSpeed;
         ETouch.Touch.onFingerDown += HandleFingerDown;
         ETouch.Touch.onFingerUp += HandleLoseFinger;
         ETouch.Touch.onFingerMove += HandleFingerMove;
@@ -21,6 +28,8 @@ public class PlayerTouchMovement : MonoBehaviour
 
     private void OnDisable()
     {
+        Instance = null;
+        SlimeController.LevelUp -= LevelUpSpeed;
         ETouch.Touch.onFingerDown -= HandleFingerDown;
         ETouch.Touch.onFingerUp -= HandleLoseFinger;
         ETouch.Touch.onFingerMove -= HandleFingerMove;
@@ -97,10 +106,10 @@ public class PlayerTouchMovement : MonoBehaviour
         return StartPosition;
     }
 
-    private void LateUpdate()
+    private void FixedUpdate()
     {
         Vector3 moveDirection = new Vector3(MovementAmount.x, 0, MovementAmount.y);
-        transform.Translate(new Vector3(MovementAmount.x, 0, MovementAmount.y) * Time.deltaTime * 5f, Space.World);
+        transform.Translate(new Vector3(MovementAmount.x, 0, MovementAmount.y) * Time.deltaTime * 5f * movementSpeed, Space.World);
 
         if (moveDirection.sqrMagnitude > 0.2f)
         {
@@ -111,6 +120,11 @@ public class PlayerTouchMovement : MonoBehaviour
         {
             transform.rotation = Quaternion.LookRotation(lastDirection);
         }
+    }
+
+    public void LevelUpSpeed()
+    {
+        movementSpeed = movementSpeed * speedMultiplyer;
     }
 
     private void OnGUI()

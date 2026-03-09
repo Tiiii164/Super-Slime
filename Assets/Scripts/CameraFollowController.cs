@@ -11,17 +11,26 @@ public class CameraFollowController : MonoBehaviour
 
     [Header("Zoom Settings")]
     [SerializeField] private float zoomMultiplier = 2f;
-    [SerializeField] private float minZoom = 5f;
-    [SerializeField] private float maxZoom = 20f;
 
     private Camera mainCamera;
+    public static CameraFollowController Instance { get; private set; }
 
     private void Awake()
     {
+        Instance = this;
+
         mainCamera = Camera.main;
         if (mainCamera == null)
         {
             Debug.LogError("Main Camera not found in scene!");
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (Instance == this)
+        {
+            Instance = null;
         }
     }
 
@@ -30,7 +39,6 @@ public class CameraFollowController : MonoBehaviour
         if (target == null) return;
 
         FollowTarget();
-        AdjustZoomBasedOnTargetSize();
     }
 
     private void FollowTarget()
@@ -39,10 +47,9 @@ public class CameraFollowController : MonoBehaviour
         transform.position = Vector3.Lerp(transform.position, desiredPosition, followSmoothness);
     }
 
-    private void AdjustZoomBasedOnTargetSize()
+    public void AdjustZoomBasedOnTargetSize()
     {
-        float targetSize = target.localScale.magnitude;
-        float desiredZoom = Mathf.Clamp(minZoom + targetSize * zoomMultiplier, minZoom, maxZoom);
-        mainCamera.orthographicSize = Mathf.Lerp(mainCamera.orthographicSize, desiredZoom, Time.deltaTime);
+        followOffset = followOffset * zoomMultiplier;
     }
+
 }
