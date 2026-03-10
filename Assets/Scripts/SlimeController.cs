@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class SlimeController : MonoBehaviour
 {
@@ -14,7 +15,7 @@ public class SlimeController : MonoBehaviour
     [SerializeField] private Transform _visual;
 
     [SerializeField] ParticleSystem eatParticle;
-
+    [SerializeField] AudioSource eatSfx;
     public static event Action LevelUp;
     public int Size => _size;
     private Animator animator;
@@ -47,7 +48,7 @@ public class SlimeController : MonoBehaviour
     public void Eat(int value)
     {
         animator.SetTrigger("eat");
-
+        eatSfx.Play();
 
         _exp += value;
 
