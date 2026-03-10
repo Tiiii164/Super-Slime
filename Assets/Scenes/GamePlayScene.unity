@@ -1953,6 +1953,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1611772703}
     - target: {fileID: 8117647297275086420, guid: fb6e154907ded46479e5d7ff1c7ef748, type: 3}
+      propertyPath: levelUpSfx
+      value: 
+      objectReference: {fileID: 157461499}
+    - target: {fileID: 8117647297275086420, guid: fb6e154907ded46479e5d7ff1c7ef748, type: 3}
       propertyPath: eatParticle
       value: 
       objectReference: {fileID: 1573042151}

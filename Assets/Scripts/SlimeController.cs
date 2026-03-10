@@ -16,6 +16,7 @@ public class SlimeController : MonoBehaviour
 
     [SerializeField] ParticleSystem eatParticle;
     [SerializeField] AudioSource eatSfx;
+    [SerializeField] AudioSource levelUpSfx;
     public static event Action LevelUp;
     public int Size => _size;
     private Animator animator;
@@ -58,6 +59,7 @@ public class SlimeController : MonoBehaviour
         {
             _size = newSize;
             UpdateScale();
+            levelUpSfx.Play();
         }
     }
 
