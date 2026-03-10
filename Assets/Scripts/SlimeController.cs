@@ -16,15 +16,14 @@ public class SlimeController : MonoBehaviour
     [SerializeField] ParticleSystem eatParticle;
 
     public static event Action LevelUp;
-
-
     public int Size => _size;
-
+    private Animator animator;
 
 
 
     private void Start()
     {
+        animator = GetComponentInChildren<Animator>();
         UpdateScale();
     }
 
@@ -47,9 +46,12 @@ public class SlimeController : MonoBehaviour
 
     public void Eat(int value)
     {
+        animator.SetTrigger("eat");
+
+
         _exp += value;
 
-        int newSize = 1 + _exp / 5;
+        int newSize = 1 + _exp / 10;
         
         if (newSize != _size)
         {

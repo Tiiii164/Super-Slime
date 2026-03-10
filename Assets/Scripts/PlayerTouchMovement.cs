@@ -12,9 +12,13 @@ public class PlayerTouchMovement : MonoBehaviour
     private Finger MovementFinger;
     private Vector2 MovementAmount;
     private Vector3 lastDirection = Vector3.forward;
-
+    private Animator animator;
     public static PlayerTouchMovement Instance { get; private set; }
 
+    private void Start()
+    {
+        animator = GetComponentInChildren<Animator>();
+    }
 
     private void OnEnable()
     {
@@ -110,7 +114,7 @@ public class PlayerTouchMovement : MonoBehaviour
     {
         Vector3 moveDirection = new Vector3(MovementAmount.x, 0, MovementAmount.y);
         transform.Translate(new Vector3(MovementAmount.x, 0, MovementAmount.y) * Time.deltaTime * 5f * movementSpeed, Space.World);
-
+        animator.SetFloat("speed", moveDirection.magnitude);
         if (moveDirection.sqrMagnitude > 0.2f)
         {
             lastDirection = moveDirection;
@@ -121,6 +125,7 @@ public class PlayerTouchMovement : MonoBehaviour
             transform.rotation = Quaternion.LookRotation(lastDirection);
         }
     }
+
 
     public void LevelUpSpeed()
     {
