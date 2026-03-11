@@ -1,22 +1,31 @@
 using System;
+using TMPro;
 using UnityEngine;
-using UnityEngine.Audio;
+using UnityEngine.UI;
 
 public class SlimeController : MonoBehaviour
 {
     [Header("Slime Stats")]
     [SerializeField] private int _size = 1;
     [SerializeField] private int _exp;
-    [SerializeField] private int[] levelThresholds = {30, 100, 300, 2000, 6000, 20000, 50000};
+    [SerializeField] private int[] levelThresholds = { 30, 100, 300, 2000, 6000, 20000, 50000 };
+
     [Header("Growth")]
     [SerializeField] private float _scalePerSize = 0.1f;
 
     [Header("Visual")]
     [SerializeField] private Transform _visual;
 
-    [SerializeField] ParticleSystem eatParticle;
+    [Header("UI")]
+    [SerializeField] private TextMeshProUGUI levelText;
+    [SerializeField] private TextMeshProUGUI expText;
+    [SerializeField] private Slider expSlider;
+    [SerializeField] private GameObject levelUpUI;
+    [Header("Audio")]
     [SerializeField] AudioSource eatSfx;
     [SerializeField] AudioSource levelUpSfx;
+    [SerializeField] ParticleSystem eatParticle;
+
     public static event Action LevelUp;
     public int Size => _size;
     private Animator animator;
@@ -26,7 +35,7 @@ public class SlimeController : MonoBehaviour
     private void Start()
     {
         animator = GetComponentInChildren<Animator>();
-        UpdateScale();
+        UpdatePlayer();
     }
 
     private void OnEnable()
@@ -50,10 +59,11 @@ public class SlimeController : MonoBehaviour
     {
         animator.SetTrigger("eat");
         eatSfx.Play();
+        UpdateExpUI();
 
         _exp += value;
 
-        int newSize = 1 ;
+        int newSize = 1;
         for (int i = 0; i < levelThresholds.Length; i++)
         {
             if (_exp >= levelThresholds[i])
@@ -65,17 +75,45 @@ public class SlimeController : MonoBehaviour
         if (newSize != _size)
         {
             _size = newSize;
-            UpdateScale();
+            UpdatePlayer();
+            StartCoroutine(PlayLevelUpImage());
             levelUpSfx.Play();
         }
     }
 
-    private void UpdateScale()
+    private void UpdatePlayer()
     {
         float scale = 1f + (_size - 1) * _scalePerSize;
         eatParticle.transform.localScale = Vector3.one * scale;
         _visual.localScale = Vector3.one * scale;
         CameraFollowController.Instance.AdjustZoomBasedOnTargetSize();
         LevelUp?.Invoke();
+        levelText.text = _size.ToString();
+    }
+
+    private System.Collections.IEnumerator PlayLevelUpImage()
+    {
+        levelUpUI.SetActive(true);
+        yield return new WaitForSeconds(0.5f);
+        levelUpUI.SetActive(false);
+    }
+
+    private void UpdateExpUI()
+    {
+        int nextThreshold;
+
+        if (_size < levelThresholds.Length)
+        {
+            nextThreshold = levelThresholds[_size];
+        }
+        else
+        {
+            nextThreshold = _exp;
+        }
+
+        expText.text = "" + _exp + " / " + nextThreshold;
+        float progress = (float)_exp / nextThreshold;
+        expSlider.value = progress;
+
     }
 }
