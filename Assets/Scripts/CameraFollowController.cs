@@ -20,10 +20,6 @@ public class CameraFollowController : MonoBehaviour
         Instance = this;
 
         mainCamera = Camera.main;
-        if (mainCamera == null)
-        {
-            Debug.LogError("Main Camera not found in scene!");
-        }
     }
 
     private void OnDestroy()
