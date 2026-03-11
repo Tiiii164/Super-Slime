@@ -5,6 +5,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 22419a8253b9ec445b9a28c659aec674, type: 3}
@@ -12,16 +13,28 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 22419a8253b9ec445b9a28c659aec674, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 6.22
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 22419a8253b9ec445b9a28c659aec674, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 6.22
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 22419a8253b9ec445b9a28c659aec674, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 6.22
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 22419a8253b9ec445b9a28c659aec674, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0
+      value: -1.092814
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 22419a8253b9ec445b9a28c659aec674, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.0040065628
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 22419a8253b9ec445b9a28c659aec674, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -50.2983
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 22419a8253b9ec445b9a28c659aec674, type: 3}
       propertyPath: m_LocalRotation.w
@@ -51,28 +64,61 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 22419a8253b9ec445b9a28c659aec674, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 22419a8253b9ec445b9a28c659aec674, type: 3}
       propertyPath: m_Name
       value: Env_GrassPlant_03
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 22419a8253b9ec445b9a28c659aec674, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7851057274501054936}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 22419a8253b9ec445b9a28c659aec674, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3256718478750437719}
   m_SourcePrefab: {fileID: 100100000, guid: 22419a8253b9ec445b9a28c659aec674, type: 3}
 --- !u!1 &6029795311401681862 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 22419a8253b9ec445b9a28c659aec674, type: 3}
   m_PrefabInstance: {fileID: 6876797836561022615}
   m_PrefabAsset: {fileID: 0}
---- !u!64 &8044166414284842537
-MeshCollider:
+--- !u!135 &7851057274501054936
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6029795311401681862}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -8710639150298789992, guid: 22419a8253b9ec445b9a28c659aec674, type: 3}
+  serializedVersion: 3
+  m_Radius: 0.24708098
+  m_Center: {x: 0.008125789, y: 0.17617348, z: -0.08495682}
+--- !u!114 &3256718478750437719
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6029795311401681862}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0b87e3a69d78e64985c67e0feee57f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Food
+  Size: 1
