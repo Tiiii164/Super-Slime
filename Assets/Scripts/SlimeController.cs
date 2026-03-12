@@ -19,8 +19,11 @@ public class SlimeController : MonoBehaviour
     [Header("UI")]
     [SerializeField] private TextMeshProUGUI levelText;
     [SerializeField] private TextMeshProUGUI expText;
+    [SerializeField] private TextMeshProUGUI timerText;
     [SerializeField] private Slider expSlider;
     [SerializeField] private GameObject levelUpUI;
+    [SerializeField] private GameObject endScreen;
+
     [Header("Audio")]
     [SerializeField] AudioSource eatSfx;
     [SerializeField] AudioSource levelUpSfx;
@@ -29,13 +32,37 @@ public class SlimeController : MonoBehaviour
     public static event Action LevelUp;
     public int Size => _size;
     private Animator animator;
-
+    private float timeLeft = 30f;
 
 
     private void Start()
     {
         animator = GetComponentInChildren<Animator>();
         UpdatePlayer();
+    }
+
+    void Update()
+    {
+        if (timeLeft > 0)
+        {
+            timeLeft -= Time.deltaTime;
+
+            int seconds = Mathf.FloorToInt(timeLeft);
+            int centisecond = Mathf.FloorToInt((timeLeft - seconds) * 100);
+
+            timerText.text = string.Format("{0:00}:{1:00}", seconds, centisecond);
+        }
+        else
+        {
+            EndGame();
+        }
+    }
+
+    void EndGame()
+    {
+        timerText.text = "00:00";
+        endScreen.SetActive(true);
+        Time.timeScale = 0f;
     }
 
     private void OnEnable()
